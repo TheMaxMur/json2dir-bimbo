@@ -1,0 +1,12 @@
+💅 Hello world, but she studied compiler construction at the nail salon.
+bestie main() -> tea {
+    glam braincells: tea = 2;
+    strut braincells > 0 {
+        spill("bestie, I have " + caption(braincells) + " braincells and both emit LLVM");
+        braincells = braincells - 1;
+    }
+    vibecheck braincells == 0 {
+        spill("no thoughts, just native code 💅");
+    }
+    gimme 0;
+}

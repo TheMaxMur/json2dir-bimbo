@@ -1,0 +1,3 @@
+#!/bin/sh
+# The compiler needs Python. Compiled programs need only the system C runtime.
+exec python3 "$(dirname "$0")/compiler/bimboc.py" "$@"

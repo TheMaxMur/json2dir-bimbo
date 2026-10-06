@@ -1,0 +1,9 @@
+{
+  "diary.txt": "Dear diary, today I compiled my situationship to LLVM.\n",
+  "walk-in-closet": {
+    "outfit.txt": "pink.exe\n",
+    "emotional-baggage": {}
+  },
+  "ex": ["link", "walk-in-closet/outfit.txt"],
+  "slay.sh": ["script", "#!/bin/sh\nprintf '%s\\n' 'no thoughts, just directory trees 💅'\n"]
+}

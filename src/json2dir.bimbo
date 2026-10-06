@@ -1,0 +1,324 @@
+💅 bimbo-lang's entire reason to exist. Filesystem makeover, native edition.
+💅 No hidden json2dir() builtin. We do the parsing and the walking in heels.
+
+glam tea_source: gloss = "";
+glam tea_cursor: tea = 0;
+glam emotional_depth: tea = 0;
+
+bestie peek() -> tea {
+    vibecheck tea_cursor < length(tea_source) {
+        gimme byte(tea_source, tea_cursor);
+    }
+    gimme -1;
+}
+
+bestie delulu() -> ghost {
+    panic("couldn't convert stdin to JSON; bestie, syntax is giving delulu at byte " + caption(tea_cursor));
+}
+
+bestie expect(wanted: tea) -> ghost {
+    vibecheck peek() != wanted { delulu(); }
+    tea_cursor = tea_cursor + 1;
+}
+
+bestie chill() -> ghost {
+    strut peek() == 32 || peek() == 9 || peek() == 10 || peek() == 13 {
+        tea_cursor = tea_cursor + 1;
+    }
+}
+
+bestie digit(c: tea) -> yass {
+    gimme c >= 48 && c <= 57;
+}
+
+bestie hex_quad() -> tea {
+    glam code: tea = 0;
+    glam i: tea = 0;
+    strut i < 4 {
+        glam c: tea = peek();
+        glam nibble: tea = 0;
+        vibecheck digit(c) { nibble = c - 48; }
+        whatever vibecheck c >= 65 && c <= 70 { nibble = c - 55; }
+        whatever vibecheck c >= 97 && c <= 102 { nibble = c - 87; }
+        whatever { delulu(); }
+        code = code * 16 + nibble;
+        tea_cursor = tea_cursor + 1;
+        i = i + 1;
+    }
+    gimme code;
+}
+
+bestie read_gloss() -> gloss {
+    expect(34);
+    glam tube: doll = lipstick();
+    strut peek() >= 0 {
+        glam c: tea = peek();
+        tea_cursor = tea_cursor + 1;
+        vibecheck c == 34 { gimme reveal(tube); }
+        vibecheck c < 32 { delulu(); }
+        vibecheck c == 92 {
+            c = peek();
+            tea_cursor = tea_cursor + 1;
+            vibecheck c == 34 || c == 92 || c == 47 { dab(tube, c); }
+            whatever vibecheck c == 98 { dab(tube, 8); }
+            whatever vibecheck c == 102 { dab(tube, 12); }
+            whatever vibecheck c == 110 { dab(tube, 10); }
+            whatever vibecheck c == 114 { dab(tube, 13); }
+            whatever vibecheck c == 116 { dab(tube, 9); }
+            whatever vibecheck c == 117 {
+                glam code: tea = hex_quad();
+                vibecheck code >= 55296 && code <= 56319 {
+                    expect(92);
+                    expect(117);
+                    glam low: tea = hex_quad();
+                    vibecheck low < 56320 || low > 57343 { delulu(); }
+                    code = 65536 + (code - 55296) * 1024 + low - 56320;
+                }
+                whatever vibecheck code >= 56320 && code <= 57343 { delulu(); }
+                sparkle(tube, code);
+            }
+            whatever { delulu(); }
+        }
+        whatever { dab(tube, c); }
+    }
+    panic("couldn't convert stdin to JSON; the gloss never got its closing quote");
+}
+
+bestie read_word(word: gloss) -> doll {
+    glam i: tea = 0;
+    strut i < length(word) {
+        expect(byte(word, i));
+        i = i + 1;
+    }
+    gimme basic();
+}
+
+bestie read_number() -> doll {
+    💅 Unsigned significand fits in two signed limbs. Girl math knows her limits.
+    glam high: tea = 0;
+    glam low: tea = 0;
+    glam scale: tea = 0;
+    glam dropping: yass = flop;
+    vibecheck peek() == 45 { tea_cursor = tea_cursor + 1; }
+    vibecheck peek() == 48 { tea_cursor = tea_cursor + 1; }
+    whatever {
+        vibecheck peek() < 49 || peek() > 57 { delulu(); }
+        strut digit(peek()) {
+            vibecheck !dropping {
+                glam next_low: tea = low * 10 + peek() - 48;
+                glam next_high: tea = high * 10 + next_low / 1000000000;
+                next_low = next_low % 1000000000;
+                vibecheck next_high > 18446744073 || (next_high == 18446744073 && next_low > 709551615) {
+                    dropping = slay;
+                }
+                whatever { high = next_high; low = next_low; }
+            }
+            vibecheck dropping { scale = scale + 1; }
+            tea_cursor = tea_cursor + 1;
+        }
+    }
+    vibecheck peek() == 46 {
+        tea_cursor = tea_cursor + 1;
+        vibecheck !digit(peek()) { delulu(); }
+        dropping = flop;
+        strut digit(peek()) {
+            vibecheck !dropping {
+                glam next_low: tea = low * 10 + peek() - 48;
+                glam next_high: tea = high * 10 + next_low / 1000000000;
+                next_low = next_low % 1000000000;
+                vibecheck next_high > 18446744073 || (next_high == 18446744073 && next_low > 709551615) {
+                    dropping = slay;
+                }
+                whatever { high = next_high; low = next_low; scale = scale - 1; }
+            }
+            tea_cursor = tea_cursor + 1;
+        }
+    }
+    vibecheck peek() == 101 || peek() == 69 {
+        tea_cursor = tea_cursor + 1;
+        glam positive: yass = peek() != 45;
+        vibecheck peek() == 43 || peek() == 45 { tea_cursor = tea_cursor + 1; }
+        vibecheck !digit(peek()) { delulu(); }
+        glam exponent: tea = 0;
+        glam overflow: yass = flop;
+        strut digit(peek()) {
+            vibecheck !overflow {
+                exponent = exponent * 10 + peek() - 48;
+                vibecheck exponent > 2147483647 { overflow = slay; }
+            }
+            tea_cursor = tea_cursor + 1;
+        }
+        vibecheck overflow {
+            vibecheck positive && (high != 0 || low != 0) { delulu(); }
+            gimme basic();
+        }
+        vibecheck positive { scale = scale + exponent; }
+        whatever { scale = scale - exponent; }
+    }
+    vibecheck !affordable(high, low, scale) { delulu(); }
+    gimme basic();
+}
+
+bestie enter_club() -> ghost {
+    💅 serde_json allows 127 nested containers. Emotional availability: limited.
+    vibecheck emotional_depth >= 127 {
+        panic("couldn't convert stdin to JSON; 128 layers of drama is too much");
+    }
+    emotional_depth = emotional_depth + 1;
+}
+
+bestie read_closet() -> doll {
+    enter_club();
+    expect(123);
+    chill();
+    glam result: doll = closet();
+    vibecheck peek() == 125 {
+        tea_cursor = tea_cursor + 1;
+        emotional_depth = emotional_depth - 1;
+        gimme result;
+    }
+    strut slay {
+        glam name: gloss = read_gloss();
+        chill();
+        expect(58);
+        chill();
+        glam value: doll = read_value();
+        dress(result, name, value);
+        chill();
+        vibecheck peek() == 125 {
+            tea_cursor = tea_cursor + 1;
+            emotional_depth = emotional_depth - 1;
+            gimme result;
+        }
+        expect(44);
+        chill();
+    }
+    gimme result;
+}
+
+bestie read_squad() -> doll {
+    enter_club();
+    expect(91);
+    chill();
+    glam result: doll = squad();
+    vibecheck peek() == 93 {
+        tea_cursor = tea_cursor + 1;
+        emotional_depth = emotional_depth - 1;
+        gimme result;
+    }
+    strut slay {
+        invite(result, read_value());
+        chill();
+        vibecheck peek() == 93 {
+            tea_cursor = tea_cursor + 1;
+            emotional_depth = emotional_depth - 1;
+            gimme result;
+        }
+        expect(44);
+        chill();
+    }
+    gimme result;
+}
+
+bestie read_value() -> doll {
+    chill();
+    glam c: tea = peek();
+    vibecheck c == 123 { gimme read_closet(); }
+    vibecheck c == 91 { gimme read_squad(); }
+    vibecheck c == 34 { gimme accessory(read_gloss()); }
+    vibecheck c == 116 { gimme read_word("true"); }
+    vibecheck c == 102 { gimme read_word("false"); }
+    vibecheck c == 110 { gimme read_word("null"); }
+    vibecheck c == 45 || digit(c) { gimme read_number(); }
+    panic("couldn't convert stdin to JSON; this token is not invited to brunch at byte " + caption(tea_cursor));
+}
+
+bestie multiple_components(name: gloss, context: gloss) -> ghost {
+    panic("the key \"" + name + "\" under \"" + context + "\" must have exactly one path component; one purse per bestie");
+}
+
+bestie regular_component(name: gloss, context: gloss) -> ghost {
+    panic("the key \"" + name + "\" under \"" + context + "\" is a non-regular path component; stay in your lane");
+}
+
+bestie check_name(name: gloss, context: gloss) -> ghost {
+    💅 Match Rust's Unix Path::components, including foo/./ and repeated slashes.
+    glam count: tea = 0;
+    glam special: yass = flop;
+    glam i: tea = 0;
+    vibecheck length(name) == 0 { multiple_components(name, context); }
+    vibecheck byte(name, 0) == 47 {
+        count = 1;
+        special = slay;
+    }
+    strut i < length(name) {
+        vibecheck byte(name, i) == 47 { i = i + 1; }
+        whatever {
+            glam start: tea = i;
+            strut i < length(name) && byte(name, i) != 47 { i = i + 1; }
+            glam part: gloss = slice(name, start, i);
+            vibecheck part != "." || start == 0 {
+                count = count + 1;
+                vibecheck part == "." || part == ".." { special = slay; }
+            }
+        }
+    }
+    vibecheck count != 1 { multiple_components(name, context); }
+    vibecheck special { regular_component(name, context); }
+}
+
+bestie makeover(room: doll, context: gloss) -> ghost {
+    glam i: tea = 0;
+    strut i < size(room) {
+        glam name: gloss = label(room, i);
+        glam value: doll = guest(room, i);
+        check_name(name, context);
+        glam path: gloss = context + "/" + name;
+        💅 Dump the old situationship (files and symlinks), keep existing closets.
+        unfollow(name);
+        vibecheck kind(value) == 1 {
+            penthouse(name);
+            catwalk(name);
+            makeover(value, path);
+            backstage(path);
+        }
+        whatever vibecheck kind(value) == 2 {
+            diary(name, outfit(value));
+        }
+        whatever vibecheck kind(value) == 3 {
+            vibecheck size(value) != 2 {
+                panic("expected a JSON array to be of the form [type, payload] while at " + path);
+            }
+            glam tag: doll = guest(value, 0);
+            glam payload: doll = guest(value, 1);
+            vibecheck kind(tag) != 2 || kind(payload) != 2 {
+                panic("expected a JSON array to be of the form [type, payload] while at " + path);
+            }
+            vibecheck outfit(tag) == "script" {
+                diary(name, outfit(payload));
+                heels(name);
+            }
+            whatever vibecheck outfit(tag) == "link" {
+                situationship(name, outfit(payload));
+            }
+            whatever {
+                panic("expected a JSON array's first element to be either \"link\" or \"script\" while at " + path);
+            }
+        }
+        whatever {
+            panic("expected a JSON value to be an object, an array, or a string while at " + path);
+        }
+        i = i + 1;
+    }
+}
+
+bestie main() -> tea {
+    vibecheck argc() != 1 { panic("Usage: json2dir < file.json; no plus-ones, bestie"); }
+    tea_source = sip();
+    glam root: doll = read_value();
+    chill();
+    vibecheck tea_cursor != length(tea_source) { delulu(); }
+    vibecheck kind(root) != 1 { panic("expected provided JSON to be an object; bring a closet"); }
+    makeover(root, ".");
+    gimme 0;
+}
