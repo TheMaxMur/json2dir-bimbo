@@ -2,6 +2,8 @@
 
 **No thoughts. Just LLVM.**
 
+📺 [YouTube: @kindashasha](https://www.youtube.com/@kindashasha) · 💌 [Telegram: @swagshasha](https://t.me/swagshasha)
+
 Statically typed. Emotionally unavailable. Ahead-of-time fabulous. 💄🧠👠
 
 A tiny compiled language that took its LLVM course at a nail salon.
