@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""bimbo-lang: a small, statically typed compiler that emits LLVM IR directly."""
+"""bimbo-lang: statically typed, emotionally unavailable, directly emitting LLVM IR. 💅🎀"""
 from __future__ import annotations
 
 import argparse
@@ -44,7 +44,7 @@ class Token:
 
 class CompileError(Exception):
     def __init__(self, token: Token, message: str):
-        self.token, self.message = token, message
+        self.token, self.message = token, message + " 💅🚨"
 
 
 @dataclass
@@ -321,7 +321,7 @@ entry:
   %status = trunc i64 %result to i32
   ret i32 %status
 }"""
-        return "\n\n".join(["; bimbo-lang: LLVM, but make it pink.\n; Source: " + json.dumps(self.source_name),
+        return "\n\n".join(["; bimbo-lang: LLVM, but make it pink. 💅🎀✨\n; Serving looks, lowering loops. 👠🔁\n; Source: " + json.dumps(self.source_name),
                               "\n".join(self.constants), "\n".join(self.global_lines),
                               "\n".join(declarations), *bodies, wrapper]) + "\n"
 
@@ -562,7 +562,7 @@ def build(ir: str, output: Path, clang: str, opt: str, sanitize: bool):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="bimbo-lang: no thoughts, just LLVM 💅")
+    parser = argparse.ArgumentParser(description="bimbo-lang: no thoughts, just LLVM 💅🎀🧠✨ — serving looks, lowering loops")
     parser.add_argument("command", choices=["build", "emit", "check", "run"])
     parser.add_argument("source", type=Path)
     parser.add_argument("-o", "--output", type=Path)
@@ -586,7 +586,7 @@ def main():
                 build(ir, executable, args.clang, args.O, args.sanitize)
                 return subprocess.run([str(executable)]).returncode
     except (OSError, subprocess.CalledProcessError) as e:
-        parser.exit(1, f"bimbo error: {e}\n")
+        parser.exit(1, f"bimbo error: {e}; the build missed its nail appointment 💅💔\n")
     return 0
 
 

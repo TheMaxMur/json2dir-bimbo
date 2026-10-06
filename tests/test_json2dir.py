@@ -60,10 +60,10 @@ INVALID = [
 def random_tree(rng, depth=0):
     result = {}
     for i in range(rng.randrange(0, 7)):
-        name = f"{i}_" + rng.choice(["bestie", "pink", "💅", "привет", "a b", "back\\slash"])
+        name = f"{i}_" + rng.choice(["bestie", "pink", "💅", "café", "a b", "back\\slash"])
         choice = rng.randrange(4 if depth < 4 else 3)
         if choice == 0:
-            result[name] = rng.choice(["", "💅\nпривет", "a\x00b", "quote\"\\\t\b\f\r", "slay"])
+            result[name] = rng.choice(["", "💅\ncafé", "a\x00b", "quote\"\\\t\b\f\r", "slay"])
         elif choice == 1:
             result[name] = ["script", "#!/bin/sh\nprintf '%s\\n' slay\n"]
         elif choice == 2:
@@ -79,12 +79,12 @@ class Json2DirTests(unittest.TestCase):
             p = run(BINARY, tmp, (ROOT / "examples/closet.json").read_bytes())
             self.assertEqual(p.returncode, 0, p.stderr.decode())
             self.assertEqual(p.stdout, b"")
-            self.assertEqual((Path(tmp) / "diary.txt").read_text(), "Dear diary, today I compiled my situationship to LLVM.\n")
+            self.assertEqual((Path(tmp) / "diary.txt").read_text(), "Dear diary 💌, today I compiled my situationship to LLVM. He failed the verifier. 💅💀\n")
             self.assertEqual(os.readlink(Path(tmp) / "ex"), "walk-in-closet/outfit.txt")
             mode = (Path(tmp) / "slay.sh").stat().st_mode
             self.assertEqual(mode & 0o111, 0o111)
             script = subprocess.run([Path(tmp) / "slay.sh"], capture_output=True, check=True)
-            self.assertEqual(script.stdout.decode(), "no thoughts, just directory trees 💅\n")
+            self.assertEqual(script.stdout.decode(), "no thoughts, just directory trees 💅📁✨\n")
 
     def test_invalid_inputs(self):
         for data in INVALID:
@@ -102,11 +102,11 @@ class Json2DirTests(unittest.TestCase):
                 self.assertIn(b"Usage:", p.stderr)
 
     def test_unicode_escapes_and_binary_string_content(self):
-        data = r'{"\u043f\u0440\u0438\u0432\u0435\u0442":"\uD83D\uDC85\u0000\/\"\\\b\f\n\r\t"}'
+        data = r'{"caf\u00e9":"\uD83D\uDC85\u0000\/\"\\\b\f\n\r\t"}'
         with tempfile.TemporaryDirectory(prefix="bimbo-unicode-") as tmp:
             p = run(BINARY, tmp, data)
             self.assertEqual(p.returncode, 0, p.stderr)
-            self.assertEqual((Path(tmp) / "привет").read_bytes(), "💅\x00/\"\\\b\f\n\r\t".encode())
+            self.assertEqual((Path(tmp) / "café").read_bytes(), "💅\x00/\"\\\b\f\n\r\t".encode())
 
     def test_overwrite_merge_and_symlink_replacement(self):
         with tempfile.TemporaryDirectory(prefix="bimbo-overwrite-") as tmp:

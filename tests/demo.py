@@ -7,7 +7,7 @@ import tempfile
 root = Path(__file__).resolve().parents[1]
 with tempfile.TemporaryDirectory(prefix="bimbo-closet-") as tmp:
     subprocess.run([root / "build/json2dir"], input=(root / "examples/closet.json").read_bytes(), cwd=tmp, check=True)
-    print("💅 Filesystem makeover:")
+    print("💅📁✨ Filesystem makeover: your directory tree just booked a nail appointment")
     for path in sorted(Path(tmp).rglob("*")):
         label = str(path.relative_to(tmp))
         if path.is_symlink():

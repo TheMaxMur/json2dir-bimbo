@@ -12,7 +12,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-/* Runtime primitives only. The JSON grammar and json2dir algorithm are .bimbo. */
+/* Glitter logistics: strings, purses, and POSIX. 💅👜
+   The JSON grammar and json2dir algorithm are .bimbo. */
 typedef struct { int64_t length; const unsigned char *data; } Gloss;
 typedef struct Doll {
     int64_t kind, count, capacity;
@@ -34,7 +35,7 @@ void bimbo_shutdown(void) {
 }
 
 static _Noreturn void die(const char *message) {
-    fprintf(stderr, "Error: %s.\n", message);
+    fprintf(stderr, "Error: %s. 💅💔\n", message);
     exit(1);
 }
 
@@ -62,7 +63,7 @@ static Gloss *gloss(const unsigned char *data, int64_t size) {
 void bimbo_panic(Gloss *message) {
     fputs("Error: ", stderr);
     fwrite(message->data, 1, (size_t)message->length, stderr);
-    fputs(".\n", stderr);
+    fputs(". 💔\n", stderr);
     exit(1);
 }
 
@@ -247,7 +248,7 @@ Gloss *bimbo_sip(void) {
 static _Noreturn void io_error(const char *operation, Gloss *path, int code) {
     fprintf(stderr, "Error: couldn't %s at \"", operation);
     fwrite(path->data, 1, (size_t)path->length, stderr);
-    fprintf(stderr, "\": %s.\n", strerror(code));
+    fprintf(stderr, "\": %s. The filesystem left us on read 💔📁\n", strerror(code));
     exit(1);
 }
 static const char *path_string(Gloss *path) {

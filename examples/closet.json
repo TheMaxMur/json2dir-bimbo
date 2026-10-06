@@ -1,9 +1,9 @@
 {
-  "diary.txt": "Dear diary, today I compiled my situationship to LLVM.\n",
+  "diary.txt": "Dear diary 💌, today I compiled my situationship to LLVM. He failed the verifier. 💅💀\n",
   "walk-in-closet": {
-    "outfit.txt": "pink.exe\n",
+    "outfit.txt": "pink.exe 🎀✨\n",
     "emotional-baggage": {}
   },
   "ex": ["link", "walk-in-closet/outfit.txt"],
-  "slay.sh": ["script", "#!/bin/sh\nprintf '%s\\n' 'no thoughts, just directory trees 💅'\n"]
+  "slay.sh": ["script", "#!/bin/sh\nprintf '%s\\n' 'no thoughts, just directory trees 💅📁✨'\n"]
 }
