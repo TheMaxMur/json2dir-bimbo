@@ -7,7 +7,7 @@
 Statically typed. Emotionally unavailable. Ahead-of-time fabulous. 💄🧠👠
 
 A tiny compiled language that took its LLVM course at a nail salon.
-Built for exactly one mission: rewriting **json2dir**. It has static types,
+Built for exactly one mission: rewriting [alurm/json2dir](https://github.com/alurm/json2dir). It has static types,
 recursion, short circuit evaluation, and an emotional depth of 127 containers.
 At the 128th, it asks you to discuss this with your therapist. 🛋️💀
 
